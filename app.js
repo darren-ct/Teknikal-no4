@@ -1,11 +1,15 @@
 const express = require("express");
-const path = require("path")
+const path = require("path");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
+app.use(express.static(path.join(__dirname,"uploads")))
 app.use(express.static(path.join(__dirname,"static")));
 app.use(express.urlencoded());
 app.use(express.json());
+
 const sequelize = require("./config/connect");
 sequelize.authenticate().then(()=>{
     console.log("Connected")
@@ -28,7 +32,7 @@ app.get("/addtype",(req,res)=>{
 });
 
 app.get("/edithero/:id",(req,res)=>{
-    res.sendFile(path.join(__dirname,"views","edittype.html"))
+    res.sendFile(path.join(__dirname,"views","edithero.html"))
 });
 
 app.get("/addhero",(req,res)=>{

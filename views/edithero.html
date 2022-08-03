@@ -1,7 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styling/style.css">
+    <style>
+        *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+body{
+    background-color: black;
+    padding: 12px 40px;
+}
+
+header {
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+button {
+    appearance: none;
+    padding: 8px 24px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 150ms ease;
+}
+
+button:hover{
+    transform: scale(1.05);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0px auto;
+}
+
+label{
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+input{
+    width: 100%;
+    margin-bottom: 32px;
+    padding: 12px;
+    color: black;
+}
+
+#photos{
+    padding: 0px;
+    width:200px ;
+    color: white;
+}
+
+.submit-btn{
+    background-color: orange;
+    margin-top: 40px;
+}
+/* Header */
+.title{
+    font-size: 32px;
+    color: orange;
+}
+
+.title span{
+    color: white;
+    font-size: 32px;
+}
+
+.add-btn{
+    background-color: orange;
+    margin-left: 4px;
+}
+
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,13 +96,13 @@
     <header>
         <h1 class="title">7<span>DW</span></h1>
         <div class="btn-group">
-            <button class="add-btn">Add Hero</button>
-            <button class="add-btn">Add Type</button>
+            <button class="add-hero">Add Hero</button>
+            <button class="add-type">Add Type</button>
         </div>
     </header>
 
     <!-- Inputs -->
-    <form action="POST" enctype="multipart/form-data">
+    <form>
         <label for="">Name</label>
         <input id="name" type="text" />
         <label for="">Photo</label>
@@ -30,6 +113,7 @@
         <button class="submit-btn">Submit</button>
     </form>
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
         const addHeroBtn = document.querySelector(".add-hero");
@@ -41,6 +125,90 @@
 
         addTypeBtn.addEventListener("click",()=>{
             location.href = "http://localhost:5000/addtype"
+        })
+
+        const paramArr = window.location.href.split("/");
+        const params = paramArr[paramArr.length - 1]
+
+        const getDetail = async() => {
+           const response = await axios.get(`http://localhost:5000/api/hero/${params}`);
+
+           const payload = response.data.data;
+           const details = payload.hero[0];
+
+           const name = document.getElementById("name");
+           const type = document.getElementById("type");
+
+           name.value = details.name;
+           type.value = details.type;
+
+         
+
+        };
+        
+        const getTypes = async() => {
+    const response = await fetch("http://localhost:5000/api/types");
+    const data = await response.json();
+    const types = data.data.types;
+
+    renderOptions(types);
+}
+
+        const renderOptions = (types) => {
+       const typeContainer = document.querySelector('#type');
+
+       const newArray = types.map(type => {
+        return `
+        <option value="${type.name}">
+            ${type.name}
+        </option>
+        `
+       });
+
+       typeContainer.innerHTML = newArray.join("")
+}
+
+        getTypes();
+        getDetail()
+
+        
+const form = document.querySelector("form");
+
+form.addEventListener("submit",async(e)=>{
+            e.preventDefault();
+
+            const name = document.querySelector("#name");
+            const type = document.querySelector("#type");
+            const image = document.querySelector("#photos");
+
+            console.log(image.files[0])
+            if(!name.value){
+               return alert("Name cannot be empty")
+            };
+
+            if(!type.value){
+               return alert("Type cannot be empty")
+            };
+
+
+            const formData = new FormData();
+
+            formData.append("name",name.value);
+            formData.append("type",type.value);
+            formData.append("image",image.files[0])
+
+            try {
+           const response = await axios.put(`http://localhost:5000/api/hero/${params}`, formData)
+
+           const payload = response.data.data;
+
+           console.log(payload);
+            
+          location.href = "http://localhost:5000/" } catch(err) {
+            console.log(err)
+          }
+
+            
         })
 
 

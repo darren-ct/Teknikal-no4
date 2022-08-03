@@ -19,7 +19,7 @@ const getHeros = async(req,res) => {
         return res.status(201).send({
             status : "Success",
             data : {
-                heros : heros
+                heros : heros.map(hero => {return {...hero,photo: "http://localhost:5000/" + hero.photo}})
             }
         });
 
@@ -36,9 +36,9 @@ const getHero = async(req,res) => {
     const id = req.params.id;
 
     const query = `
-    SELECT hero_tb.id,hero_tb.name AS name , photo , type_tb.name AS type FROM 
-    hero_tb INNER JOIN type_tb AND hero_tb.id = ${id}
-    ON hero_tb.type_id = type_tb.id
+    SELECT hero_tb.name AS name , photo , type_tb.name AS type FROM 
+    hero_tb INNER JOIN type_tb 
+    ON hero_tb.type_id = type_tb.id AND hero_tb.id = ${id}
     `;
 
     try {
@@ -47,7 +47,7 @@ const getHero = async(req,res) => {
         return res.status(201).send({
             status : "Success",
             data : {
-                hero : hero
+                hero : {...hero, photo: "http://localhost:5000/" + hero.photo}
             }
         });
 
