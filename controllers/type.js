@@ -1,6 +1,36 @@
 const Type = require("../models/Type");
 
+const getType = async(req,res) => {
+    const id = req.params.id;
 
+    try {
+
+
+        const type = await Type.findOne({where:{id}});
+
+        if(!type) {
+            return res.status(400).send({
+                status:"fail"
+            })
+        };
+
+        
+        return res.status(201).send({
+            status : "Success",
+            data : {
+                type : type
+            }
+        });
+
+
+    } catch(err) {
+
+        return res.status(400).send({
+            status : "Fail"
+        });
+    };
+
+}
 
 const getTypes = async(req,res) => {
 
@@ -79,4 +109,4 @@ const updateType = async(req,res) => {
     };
 };
 
-module.exports = {getTypes,postType,deleteType,updateType}
+module.exports = {getType,getTypes,postType,deleteType,updateType}

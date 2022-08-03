@@ -1,7 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styling/style.css">
+    <style>
+        *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+body{
+    background-color: black;
+    padding: 12px 40px;
+}
+
+header {
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+button {
+    appearance: none;
+    padding: 8px 24px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: 150ms ease;
+}
+
+button:hover{
+    transform: scale(1.05);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0px auto;
+}
+
+label{
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+input{
+    width: 100%;
+    margin-bottom: 32px;
+    padding: 12px;
+    color: black;
+}
+
+#photos{
+    padding: 0px;
+    width:200px ;
+    color: white;
+}
+
+.submit-btn{
+    background-color: orange;
+    margin-top: 40px;
+}
+/* Header */
+.title{
+    font-size: 32px;
+    color: orange;
+}
+
+.title span{
+    color: white;
+    font-size: 32px;
+}
+
+.add-btn{
+    background-color: orange;
+    margin-left: 4px;
+}
+
+/* Heros */
+.heros{
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.hero-card{
+    display: flex;
+    padding: 12px 12px;
+    flex-direction: column;
+    background-color: grey;
+    min-width: 240px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+img{
+    margin-bottom: 16px;
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
+.card__title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card__type{
+    font-size: 14px;
+    margin-bottom: 64px;
+    color: orange;
+}
+
+.edit-btn{
+    margin-bottom: 12px;
+    background-color: green;
+}
+
+.delete-btn{
+   background-color: red;
+}
+
+b{
+    cursor: pointer;
+}
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +143,20 @@
     <header>
         <h1 class="title">7<span>DW</span></h1>
         <div class="btn-group">
-            <button class="add-btn">Add Hero</button>
-            <button class="add-btn">Add Type</button>
+            <button class="add-hero">Add Hero</button>
+            <button class="add-type">Add Type</button>
         </div>
     </header>
 
+    <!-- Inputs -->
+    <form action="POST" enctype="multipart/form-data">
+        <label >Type Name</label>
+        <input id="name" type="text" />
+        
+        <button class="submit-btn">Submit</button>
+  </form>
     
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
 
         const addHeroBtn = document.querySelector(".add-hero");
@@ -31,6 +169,59 @@
         addTypeBtn.addEventListener("click",()=>{
             location.href = "http://localhost:5000/addtype"
         })
+
+
+        // 
+
+        const paramArr = window.location.href.split("/");
+        const params = paramArr[paramArr.length - 1]
+
+        const getType = async() => {
+        const response = await fetch(`http://localhost:5000/api/type/${params}`);
+        const data = await response.json();
+         const type = data.data.type;
+
+        console.log(type);
+         }
+
+         getType();
+
+
+        //  
+
+        const form = document.querySelector("form");
+
+          form.addEventListener("submit",async(e)=>{
+            e.preventDefault();
+
+            const name = document.querySelector("#name");
+  
+
+           
+            if(!name.value){
+               return alert("Name cannot be empty")
+            };
+
+            
+            const formData = new FormData();
+
+            formData.append("name",name.value);
+
+            try {
+           const response = await axios.put(`http://localhost:5000/api/type/${params}`, formData)
+
+           const payload = response.data.data;
+
+           console.log(payload);
+            
+          location.href = "http://localhost:5000/" } catch(err) {
+            console.log(err)
+          }
+
+            
+        })
+
+
 
     </script>
 </body>

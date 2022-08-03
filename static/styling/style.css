@@ -123,3 +123,7 @@ img{
 .delete-btn{
    background-color: red;
 }
+
+b{
+    cursor: pointer;
+}

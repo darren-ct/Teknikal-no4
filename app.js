@@ -19,6 +19,11 @@ app.get("/", (req,res)=>{
     res.sendFile(path.join(__dirname,"views","index.html"))
 });
 
+app.get("/types", (req,res)=>{
+    res.sendFile(path.join(__dirname,"views","types.html"))
+});
+
+
 app.get("/details/:id", (req,res)=>{
     res.sendFile(path.join(__dirname,"views","details.html"))
 });

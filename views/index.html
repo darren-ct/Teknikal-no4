@@ -13,6 +13,7 @@
     <header>
         <h1 class="title">7<span>DW</span></h1>
         <div class="btn-group">
+            <b>See Types</b>
             <button class="add-hero">Add Hero</button>
             <button class="add-type">Add Type</button>
         </div>
@@ -27,6 +28,11 @@
     <script>
         const addHeroBtn = document.querySelector(".add-hero");
         const addTypeBtn = document.querySelector(".add-type");
+        const bold = document.querySelector("b");
+
+        bold.addEventListener("click",(e)=>{
+            location.href = "http://localhost:5000/types"
+        })
 
         addHeroBtn.addEventListener("click",()=>{
             location.href = "http://localhost:5000/addhero"
