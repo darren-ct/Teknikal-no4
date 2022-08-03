@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styling/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Hero</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1 class="title">7<span>DW</span></h1>
+        <div class="btn-group">
+            <button class="add-btn">Add Type</button>
+        </div>
+    </header>
+
+    <!-- Inputs -->
+    <form action="POST" enctype="multipart/form-data">
+          <label for="">Name</label>
+          <input id="name" type="text" />
+          <label for="">Photo</label>
+          <input id="photos" type="file"/>
+          <label for="">Type</label>
+          <select id="type">
+          </select>
+          <button class="submit-btn">Submit</button>
+    </form>
+
+       
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        const addTypeBtn = document.querySelector(".add-type");
+        addTypeBtn.addEventListener("click",()=>{
+            location.href = "http://localhost:5000/addtype"
+        })
+
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit",async(e)=>{
+            e.preventDefault();
+
+            const name = document.querySelector("#name");
+            const type = document.querySelector("#type");
+            const image = document.querySelector("#photos");
+
+            console.log(image.files[0])
+            if(!name.value){
+               return alert("Name cannot be empty")
+            };
+
+            if(!type.value){
+               return alert("Type cannot be empty")
+            };
+
+            if(!image.files[0]){
+               return alert("Image cannot be empty")
+            };
+
+            const formData = new FormData();
+
+            formData.append("name",name.value);
+            formData.append("type",type.value);
+            formData.append("image",image.files[0])
+
+            try {
+           const response = await axios.post("http://localhost:5000/api/hero", formData)
+
+           const payload = response.data.data;
+
+           console.log(payload);
+            
+          location.href = "http://localhost:5000/" } catch(err) {
+            console.log(err)
+          }
+
+            
+        })
+   
+const getTypes = async() => {
+    const response = await fetch("http://localhost:5000/api/types");
+    const data = await response.json();
+    const types = data.data.types;
+
+    renderOptions(types);
+}
+
+const renderOptions = (types) => {
+       const typeContainer = document.querySelector('#type');
+
+       const newArray = types.map(type => {
+        return `
+        <option value="${type.name}">
+            ${type.name}
+        </option>
+        `
+       });
+
+       typeContainer.innerHTML = newArray.join("")
+}
+
+getTypes();
+</script>
+</body>
+</html>

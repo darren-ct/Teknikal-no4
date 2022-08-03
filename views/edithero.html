@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styling/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Hero</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1 class="title">7<span>DW</span></h1>
+        <div class="btn-group">
+            <button class="add-btn">Add Hero</button>
+            <button class="add-btn">Add Type</button>
+        </div>
+    </header>
+
+    <!-- Inputs -->
+    <form action="POST" enctype="multipart/form-data">
+        <label for="">Name</label>
+        <input id="name" type="text" />
+        <label for="">Photo</label>
+        <input id="photos" type="file"/>
+        <label for="">Type</label>
+        <select id="type">
+        </select>
+        <button class="submit-btn">Submit</button>
+    </form>
+
+    <script>
+
+        const addHeroBtn = document.querySelector(".add-hero");
+        const addTypeBtn = document.querySelector(".add-type");
+
+        addHeroBtn.addEventListener("click",()=>{
+            location.href = "http://localhost:5000/addhero"
+        })
+
+        addTypeBtn.addEventListener("click",()=>{
+            location.href = "http://localhost:5000/addtype"
+        })
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styling/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1 class="title">7<span>DW</span></h1>
+        <div class="btn-group">
+            <button class="add-hero">Add Hero</button>
+            <button class="add-type">Add Type</button>
+        </div>
+    </header>
+
+    <!-- Collections -->
+    <div class="heros">
+        <!-- hero cards -->
+
+    </div>
+     
+    <script>
+        const addHeroBtn = document.querySelector(".add-hero");
+        const addTypeBtn = document.querySelector(".add-type");
+
+        addHeroBtn.addEventListener("click",()=>{
+            location.href = "http://localhost:5000/addhero"
+        })
+
+        addTypeBtn.addEventListener("click",()=>{
+            location.href = "http://localhost:5000/addtype"
+        })
+
+         const getHeros = async() => {
+              const response = await fetch("http://localhost:5000/api/heros");
+              const data = await response.json();
+
+              const heros = data.data.heros;
+
+              renderHeros(heros)
+         };
+         const renderHeros = (heros) => {
+                const heroContainer = document.querySelector(".heros");
+
+                if(heros.length === 0){
+                     heroContainer.innerHTML = `No Hero is Found`
+                }
+               
+               const newArray = heros.map(hero => {
+                return `
+                <div class="hero-card" id=${hero.id}>
+                     <img class="card__img" src='${hero.photo}'/>
+                     <span class="card__title">${hero.name}</span>
+                     <p class="card__type">${hero.type}</p>
+                     <button class="edit-btn" id=${hero.id}>Edit</button>
+                     <button class="delete-btn" id=${hero.id}>Delete</button>
+                </div>
+                `
+               });
+
+               heroContainer.innerHTML = newArray.join("");
+
+
+            //    Addeventlisteners
+            const cards = document.querySelectorAll(".hero-card");
+            const editBtns = document.querySelectorAll(".edit-btn");
+            const deleteBtns = document.querySelectorAll(".delete-btn");
+
+            cards.forEach(card => {
+                card.addEventListener("click", (e)=>{
+                    const id = e.currentTarget.id;
+
+                    location.href = `http://localhost:5000/details/${id}`
+                })
+            });
+
+            editBtns.forEach(btn => {
+                btn.addEventListener("click", (e)=>{
+                    e.stopPropagation();
+                    const id = e.currentTarget.id;
+
+                    location.href = `http://localhost:5000/edithero/${id}`
+                })
+            });
+
+            deleteBtns.forEach(btn => {
+                btn.addEventListener("click", (e)=>{
+                    e.stopPropagation();
+                    const id = e.currentTarget.id;
+
+                    deleteHero(id)
+                })
+            });
+
+
+         }
+         const deleteHero = async(id) => {
+            await fetch(`http://localhost:5000/api/hero/${id}`, { method: 'DELETE' });
+            getHeros();
+         }
+    
+        
+         getHeros();
+    </script>
+</body>
+</html>
