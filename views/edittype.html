@@ -181,8 +181,8 @@ b{
         const data = await response.json();
          const type = data.data.type;
 
-        console.log(type);
-         }
+        const input = document.querySelector("#name");
+        input.value = type.name; }
 
          getType();
 
