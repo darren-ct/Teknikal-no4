@@ -28,6 +28,7 @@ button {
     font-weight: bold;
     border-radius: 4px;
     transition: 150ms ease;
+    
 }
 
 button:hover{
@@ -53,6 +54,15 @@ input{
     padding: 12px;
     color: black;
 }
+
+select{
+   color: black;
+}
+
+option {
+    color: black;
+};
+
 
 #photos{
     padding: 0px;
@@ -102,6 +112,16 @@ img{
     width: 100%;
     height: 170px;
     object-fit: cover;
+}
+
+.add-hero{
+    margin-left: 16px;
+    background-color: orange;
+}
+
+.add-type{
+    margin-left: 16px;
+    background-color: orange;
 }
 
 .card__title {
