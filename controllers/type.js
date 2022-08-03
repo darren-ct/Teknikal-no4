@@ -1,4 +1,6 @@
 const Type = require("../models/Type");
+const { QueryTypes } = require('sequelize');
+const sequelize = require('../config/connect');
 
 const getType = async(req,res) => {
     const id = req.params.id;
@@ -57,6 +59,10 @@ const postType = async(req,res) => {
     const {name} = req.body;
 
     try {
+        //const query = ` INSERT INTO type_tb (name)
+        // VALUES (${name})`;
+
+        // await sequelize.query(query,{type:QueryTypes.INSERT});
         await Type.create({
             name
         });

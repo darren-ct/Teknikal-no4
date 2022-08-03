@@ -72,7 +72,7 @@ const postHero = async(req,res) => {
         })
     }
     const photo = req.file.filename;
-    console
+    
 
     const typeObj = await Type.findOne({where:{name:type},attributes:["id"]});
 
@@ -85,6 +85,10 @@ const postHero = async(req,res) => {
     const type_id = typeObj.id;
 
     try {
+        //const query = ` INSERT INTO hero_tb (name,type_id,photo)
+        // VALUES (${name},${type_id},${photo})`;
+
+        // await sequelize.query(query,{type:QueryTypes.INSERT});
         await Hero.create({
                name,
                type_id,
