@@ -97,11 +97,19 @@ const deleteType = async(req,res) => {
 
 const updateType = async(req,res) => {
     const id = req.params.id;
+    
     const {name} = req.body;
-
+    console.log(name)
 
     try {
          await Type.update({name:name},{where:{id:id}})
+
+         console.log("masuk 2")
+
+         return res.status(201).send({
+            status:"Success"
+         })
+         
     } catch(err) {
         return res.status(400).send({
             status : "Fail"

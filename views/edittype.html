@@ -193,6 +193,7 @@ b{
 
           form.addEventListener("submit",async(e)=>{
             e.preventDefault();
+            console.log("Submit")
 
             const name = document.querySelector("#name");
   
@@ -208,7 +209,7 @@ b{
             formData.append("name",name.value);
 
             try {
-           const response = await axios.put(`http://localhost:5000/api/type/${params}`, formData)
+           const response = await axios.put(`http://localhost:5000/api/type/${params}`, {name:name.value})
 
            const payload = response.data.data;
 
