@@ -12,7 +12,7 @@ router.delete("/hero/:id", deleteHero);
 router.put("/hero/:id", uploadFile("image"), updateHero);
 
 router.get("/types", getTypes);
-router.get("/type",getType)
+router.get("/type/:id",getType)
 router.post("/type",postType);
 router.delete("/type/:id",deleteType);
 router.put("/type/:id",updateType);
